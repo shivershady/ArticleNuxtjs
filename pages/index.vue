@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen bg-yellow-400 flex justify-center items-center py-20">
     <div class="container mx-auto p-12 bg-gray-100 rounded-xl">
-      <router-link :to="{name:'favorite'}" class="bg-red-400 p-4 rounded-2xl">Xem yêu thích</router-link>
       <form action="" @submit.prevent="searchArticles()" class="mt-6">
         <div class="w-full">
           <input type="text" placeholder="Tìm kiếm" class="w-2/3 h-10 text-center mb-6" v-model="keyword">
@@ -59,34 +58,11 @@ export default {
     async searchArticles() {
       try {
         const resp = await this.$repositories.home.getArticles(this.keyword, this.page);
-        console.log(resp);
         this.listArticle = resp.data.articles;
       } catch (e) {
         console.log(e);
       }
-    },
-    favoriteArticle(article) {
-      let favorite = localStorage.getItem('favorite');
-      if (!favorite) {
-        let favorite = [];
-        favorite.push(article);
-        alert("Thêm bài viết thành công");
-        localStorage.setItem('favorite', JSON.stringify(favorite));
-        return
-      } else {
-        favorite = JSON.parse(favorite);
-        let check = favorite.findIndex(item => item.url == article.url);
-        if (check > -1) {
-          alert("Đã yêu thích");
-          return;
-        } else {
-          favorite.push(article);
-          alert("Thêm bài viết yêu thích thành công");
-          localStorage.setItem('favorite', JSON.stringify(favorite));
-          return;
-        }
-      }
-    },
+    }
   },
 }
 </script>
